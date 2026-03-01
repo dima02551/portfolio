@@ -1,28 +1,17 @@
 /* ============================================
    ПОРТФОЛИО — ДОБАВЛЯЙ СЮДА НОВЫЕ КЕЙСЫ
    Просто допиши объект в массив — карточка
-   появится автоматически. Больше ничего не трогай.
-   ============================================
-
-   Поля:
-     title   — название проекта
-     desc    — краткое описание (1–2 предложения)
-     stack   — массив инструментов/технологий
-     link    — ссылка на проект (или "#" если нет)
-     type    — "real" (реальный) или "demo" (учебный)
+   появится автоматически.
 ============================================ */
 
 const projects = [
-  // ✅ РЕАЛЬНЫЙ ПРОЕКТ — замени ссылку и описание на свои
   {
-    title: "Telegram-бот для записи клиентов",
-    desc: "Бот для записи на приём к специалисту. Выбор времени, подтверждение, напоминания за 2 часа. Интеграция с Google Sheets.",
-    stack: ["Python", "aiogram", "Google Sheets API"],
-    link: "https://t.me/ВАШ_БОТ",  // ← замени на свою ссылку
+    title: "Бот для мастеров на дом",
+    desc: "Telegram-бот для записи мастеров на дом. Клиент выбирает услугу, удобное время и оставляет заявку. Мастер получает уведомление и подтверждает.",
+    stack: ["Python", "aiogram", "SQLite"],
+    link: "https://t.me/ProMasterNaDom_bot",
     type: "real"
   },
-
-  // 👇 ДЕМО-КЕЙСЫ — можешь заменить на свои реальные работы
   {
     title: "Лендинг для онлайн-школы",
     desc: "Одностраничный сайт для курсов по дизайну. Форма заявки, секция с преподавателями, FAQ и блок отзывов.",
@@ -61,8 +50,8 @@ const projects = [
 ];
 
 /* ============================================
-   РЕНДЕР КАРТОЧЕК ПОРТФОЛИО — не трогай
-   ============================================ */
+   РЕНДЕР КАРТОЧЕК ПОРТФОЛИО
+============================================ */
 function renderPortfolio() {
   const grid = document.getElementById("portfolioGrid");
   if (!grid) return;
@@ -89,31 +78,27 @@ function renderPortfolio() {
     </div>
   `).join("");
 
-  // Запускаем анимацию появления для новых карточек
   observeReveal();
 }
 
 /* ============================================
-   НАВИГАЦИЯ — скролл и бургер
-   ============================================ */
+   НАВИГАЦИЯ
+============================================ */
 function initNav() {
-  const nav     = document.getElementById("nav");
-  const burger  = document.getElementById("burger");
-  const links   = document.getElementById("navLinks");
+  const nav    = document.getElementById("nav");
+  const burger = document.getElementById("burger");
+  const links  = document.getElementById("navLinks");
 
-  // Тень при скролле
   window.addEventListener("scroll", () => {
     nav.classList.toggle("scrolled", window.scrollY > 20);
   }, { passive: true });
 
-  // Бургер-меню
   burger.addEventListener("click", () => {
     const open = burger.classList.toggle("open");
     links.classList.toggle("open", open);
     document.body.style.overflow = open ? "hidden" : "";
   });
 
-  // Закрыть меню при клике на ссылку
   links.querySelectorAll("a").forEach(a => {
     a.addEventListener("click", () => {
       burger.classList.remove("open");
@@ -124,8 +109,8 @@ function initNav() {
 }
 
 /* ============================================
-   ПЛАВНОЕ ПОЯВЛЕНИЕ СЕКЦИЙ
-   ============================================ */
+   АНИМАЦИЯ ПОЯВЛЕНИЯ
+============================================ */
 function observeReveal() {
   const observer = new IntersectionObserver(
     (entries) => {
@@ -138,39 +123,25 @@ function observeReveal() {
     },
     { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
   );
-
   document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
 }
 
-/* ============================================
-   ДОБАВИТЬ КЛАССЫ REVEAL К СЕКЦИЯМ
-   ============================================ */
 function addRevealClasses() {
-  const selectors = [
-    ".service-card",
-    ".pricing-card",
-    ".trust-card",
-    ".process-step",
-    ".section__header"
-  ];
-  selectors.forEach(sel => {
-    document.querySelectorAll(sel).forEach(el => el.classList.add("reveal"));
-  });
+  [".service-card", ".pricing-card", ".trust-card", ".process-step", ".section__header"]
+    .forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add("reveal")));
 }
 
 /* ============================================
    ФОРМА — уведомление об успешной отправке
-   ============================================ */
+============================================ */
 function initForm() {
   const form = document.querySelector(".contact__form");
   if (!form) return;
 
-  // Netlify редиректит на /success по умолчанию.
-  // Чтобы показать сообщение без перехода — перехватываем сабмит
   form.addEventListener("submit", async function(e) {
     e.preventDefault();
 
-    const btn = form.querySelector("button[type=submit]");
+    const btn  = form.querySelector("button[type=submit]");
     const orig = btn.textContent;
     btn.textContent = "Отправляю...";
     btn.disabled = true;
@@ -190,12 +161,13 @@ function initForm() {
             <h3 style="font-family:'Syne',sans-serif;margin-bottom:0.5rem">Заявка отправлена!</h3>
             <p style="color:var(--text-muted);font-size:0.95rem">
               Отвечу в Telegram в течение часа.<br/>
-              Если срочно — пишите напрямую: <a href="https://t.me/Digital_Master_onebot" style="color:var(--accent-light)">@dima_02551</a>
+              Если срочно — пишите напрямую:
+              <a href="https://t.me/dima_02551" style="color:var(--accent-light)">@dima_02551</a>
             </p>
           </div>
         `;
       } else {
-        throw new Error("Ошибка сервера");
+        throw new Error("Ошибка");
       }
     } catch {
       btn.textContent = orig;
@@ -207,11 +179,11 @@ function initForm() {
 
 /* ============================================
    ЗАПУСК
-   ============================================ */
+============================================ */
 document.addEventListener("DOMContentLoaded", () => {
-  renderPortfolio();   // рендер кейсов
-  addRevealClasses();  // классы для анимации
-  observeReveal();     // IntersectionObserver
-  initNav();           // навигация
-  initForm();          // форма заявки
+  renderPortfolio();
+  addRevealClasses();
+  observeReveal();
+  initNav();
+  initForm();
 });
