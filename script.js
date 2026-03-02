@@ -17,7 +17,7 @@ const projects = [
     title: "Лендинг для онлайн-школы",
     desc: "Одностраничный сайт для курсов по дизайну. Форма заявки, секция с преподавателями, FAQ и блок отзывов.",
     stack: ["HTML", "CSS", "JavaScript"],
-    link: "#",
+    link: "https://dima02551.github.io/school-landing/",
     type: "demo"
   },
   {
