@@ -1,9 +1,3 @@
-/* ============================================
-   ПОРТФОЛИО — ДОБАВЛЯЙ СЮДА НОВЫЕ КЕЙСЫ
-   Просто допиши объект в массив — карточка
-   появится автоматически.
-============================================ */
-
 const projects = [
   {
     title: "Бот для мастеров на дом",
@@ -13,9 +7,16 @@ const projects = [
     type: "real"
   },
   {
+    title: "Бот-автоворонка для онлайн-курса",
+    desc: "Воронка продаж для курса по SMM. Лид-магнит, серия прогревающих сообщений, продажа курса. Статистика и рассылка для админа.",
+    stack: ["Python", "aiogram", "SQLite"],
+    link: "https://t.me/Digital_Master_onebot",
+    type: "demo"
+  },
+  {
     title: "Лендинг для онлайн-школы",
     desc: "Одностраничный сайт для курсов по дизайну. Форма заявки, секция с преподавателями, FAQ и блок отзывов.",
-    stack: ["HTML", "CSS", "JavaScript", "Netlify Forms"],
+    stack: ["HTML", "CSS", "JavaScript"],
     link: "#",
     type: "demo"
   },
@@ -39,23 +40,12 @@ const projects = [
     stack: ["Figma", "Canva", "ChatGPT"],
     link: "#",
     type: "demo"
-  },
-  {
-    title: "Бот-автоворонка для инфобизнеса",
-    desc: "Приветственная цепочка сообщений, выдача лид-магнита, серия прогревающих писем, продажа курса.",
-    stack: ["Python", "aiogram", "ChatGPT API"],
-    link: "#",
-    type: "demo"
   }
 ];
 
-/* ============================================
-   РЕНДЕР КАРТОЧЕК ПОРТФОЛИО
-============================================ */
 function renderPortfolio() {
   const grid = document.getElementById("portfolioGrid");
   if (!grid) return;
-
   grid.innerHTML = projects.map(p => `
     <div class="portfolio-card reveal">
       <span class="portfolio-card__badge portfolio-card__badge--${p.type}">
@@ -66,24 +56,16 @@ function renderPortfolio() {
       <div class="portfolio-card__stack">
         ${p.stack.map(s => `<span class="stack-tag">${s}</span>`).join("")}
       </div>
-      <a
-        href="${p.link}"
-        target="${p.link !== "#" ? "_blank" : "_self"}"
-        rel="noopener"
+      <a href="${p.link}" target="${p.link !== "#" ? "_blank" : "_self"}" rel="noopener"
         class="portfolio-card__link"
-        ${p.link === "#" ? 'onclick="return false" style="opacity:0.45;cursor:default"' : ""}
-      >
+        ${p.link === "#" ? 'onclick="return false" style="opacity:0.45;cursor:default"' : ""}>
         ${p.link !== "#" ? "Смотреть проект →" : "Скоро появится"}
       </a>
     </div>
   `).join("");
-
   observeReveal();
 }
 
-/* ============================================
-   НАВИГАЦИЯ
-============================================ */
 function initNav() {
   const nav    = document.getElementById("nav");
   const burger = document.getElementById("burger");
@@ -108,19 +90,11 @@ function initNav() {
   });
 }
 
-/* ============================================
-   АНИМАЦИЯ ПОЯВЛЕНИЯ
-============================================ */
 function observeReveal() {
   const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("visible");
-          observer.unobserve(entry.target);
-        }
-      });
-    },
+    entries => entries.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add("visible"); observer.unobserve(e.target); }
+    }),
     { threshold: 0.1, rootMargin: "0px 0px -40px 0px" }
   );
   document.querySelectorAll(".reveal").forEach(el => observer.observe(el));
@@ -131,27 +105,23 @@ function addRevealClasses() {
     .forEach(sel => document.querySelectorAll(sel).forEach(el => el.classList.add("reveal")));
 }
 
-/* ============================================
-   ФОРМА — уведомление об успешной отправке
-============================================ */
+// Formspree сам обрабатывает форму — показываем красивое сообщение после отправки
 function initForm() {
   const form = document.querySelector(".contact__form");
   if (!form) return;
 
   form.addEventListener("submit", async function(e) {
     e.preventDefault();
-
     const btn  = form.querySelector("button[type=submit]");
     const orig = btn.textContent;
     btn.textContent = "Отправляю...";
     btn.disabled = true;
 
     try {
-      const data = new FormData(form);
-      const response = await fetch("/", {
+      const response = await fetch(form.action, {
         method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(data).toString()
+        body: new FormData(form),
+        headers: { "Accept": "application/json" }
       });
 
       if (response.ok) {
@@ -177,9 +147,6 @@ function initForm() {
   });
 }
 
-/* ============================================
-   ЗАПУСК
-============================================ */
 document.addEventListener("DOMContentLoaded", () => {
   renderPortfolio();
   addRevealClasses();
