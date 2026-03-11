@@ -161,5 +161,3 @@ document.addEventListener("DOMContentLoaded", () => {
   initNav();
   initForm();
 });
-  initForm();
-});
