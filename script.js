@@ -1,8 +1,15 @@
 const projects = [
   {
+    title: "Аудио-бот с библиотекой историй",
+    desc: "Telegram-бот с библиотекой из 500+ аудиотреков. Поиск по названию, рандомная история, подборки и сборники лучшего. Полная админка — добавление аудио без кода. Деплой на Railway.",
+    stack: ["Python", "aiogram 3", "PostgreSQL", "Supabase", "Railway"],
+    link: "https://t.me/Histori_voice_bot",
+    type: "real"
+  },
+  {
     title: "Бот для мастеров на дом",
-    desc: "Telegram-бот для записи мастеров на дом. Клиент выбирает услугу, удобное время и оставляет заявку. Мастер получает уведомление и подтверждает.",
-    stack: ["Python", "aiogram", "SQLite"],
+    desc: "Telegram-бот для записи клиентов к мастерам. Каталог услуг, запись, управление заявками. Inline-поиск на кириллице, категории, массовый импорт данных. Деплой на Railway.",
+    stack: ["Python", "aiogram 3", "PostgreSQL", "Supabase", "Railway"],
     link: "https://t.me/ProMasterNaDom_bot",
     type: "real"
   },
@@ -152,5 +159,7 @@ document.addEventListener("DOMContentLoaded", () => {
   addRevealClasses();
   observeReveal();
   initNav();
+  initForm();
+});
   initForm();
 });
